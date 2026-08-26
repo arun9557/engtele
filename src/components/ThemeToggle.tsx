@@ -1,38 +1,47 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
+
+function subscribe(callback: () => void) {
+  const observer = new MutationObserver(callback);
+  if (typeof document !== 'undefined') {
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+  }
+  return () => observer.disconnect();
+}
+
+function getSnapshot() {
+  if (typeof document === 'undefined') return false;
+  return document.documentElement.classList.contains('dark');
+}
+
+function getServerSnapshot() {
+  return false;
+}
 
 export default function ThemeToggle() {
-  const [dark, setDark] = useState(false);
-
-  /* Read saved preference on mount */
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'dark' || (!saved && prefersDark)) {
-      document.documentElement.classList.add('dark');
-      setDark(true);
-    }
-  }, []);
+  const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const toggle = () => {
     const html = document.documentElement;
-    if (dark) {
+    if (isDark) {
       html.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     } else {
       html.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     }
-    setDark((prev) => !prev);
   };
 
   return (
     <button
       id="theme-toggle"
       onClick={toggle}
-      aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-      title={dark ? 'Light Mode' : 'Dark Mode'}
+      aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+      title={isDark ? 'Light Mode' : 'Dark Mode'}
       className="
         flex items-center justify-center w-9 h-9 rounded-full
         border border-[#E8E8F0] dark:border-[#2A2A3E]
@@ -45,7 +54,7 @@ export default function ThemeToggle() {
       "
     >
       <span className="text-base leading-none select-none">
-        {dark ? '☀️' : '🌙'}
+        {isDark ? '☀️' : '🌙'}
       </span>
     </button>
   );

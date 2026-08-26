@@ -11,6 +11,8 @@ export default function AudioIntro() {
 
   const introText = "Hello there! I'm Marcus, your 1-on-1 telephone English tutor. I've helped over 70 professionals speak natural, fluent British English with confidence. No stressful video calls or boring grammar drills—just real, engaging conversation tailored to your personal goals. Book your free trial call today, and let's get you speaking naturally!";
 
+  const soundBars = [40, 70, 90, 60, 100, 45, 80, 65, 95, 50, 75, 85, 30, 90, 60, 80, 45, 100, 70, 40];
+
   useEffect(() => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       synthRef.current = window.speechSynthesis;
@@ -181,15 +183,15 @@ export default function AudioIntro() {
 
                   {/* Animated sound wave bars */}
                   <div className="flex items-center gap-1.5 mt-3 h-5">
-                    {[40, 70, 90, 60, 100, 45, 80, 65, 95, 50, 75, 85, 30, 90, 60, 80, 45, 100, 70, 40].map((h, i) => (
+                    {soundBars.map((h, i) => (
                       <span
                         key={i}
                         className={`w-1 rounded-full transition-all duration-300 ${
                           isPlaying ? 'bg-[#F97316]' : 'bg-[#E8E8F0] dark:bg-[#2A2A3E]'
                         }`}
                         style={{
-                          height: isPlaying ? `${Math.max(20, (h * Math.random() + 20))}%` : `${h * 0.3}%`,
-                          animation: isPlaying ? `pulse 1s infinite ${i * 0.05}s` : 'none'
+                          height: isPlaying ? `${Math.min(100, Math.max(25, h))}%` : `${h * 0.3}%`,
+                          animation: isPlaying ? `pulse 0.8s infinite ${i * 0.04}s` : 'none'
                         }}
                       />
                     ))}
@@ -212,7 +214,7 @@ export default function AudioIntro() {
                   Want to practice your conversation with Marcus?
                 </p>
                 <a
-                  href="#cta"
+                  href="#pricing"
                   className="text-xs font-bold text-white bg-[#1E1E2E] dark:bg-[#F97316] hover:bg-[#F97316] dark:hover:bg-[#EA6C0A] px-4 py-2 rounded-full transition-all duration-200"
                 >
                   Book 20-min Free Call
