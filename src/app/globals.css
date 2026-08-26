@@ -1,35 +1,35 @@
 @import "tailwindcss";
 
-@theme inline {
-  /* Color Tokens */
-  --color-gold: #C9A84C;
-  --color-gold-light: #E8D5A3;
-  --color-gold-dark: #A8873A;
-  --color-cream: #FAF8F4;
-  --color-beige: #F4F0E8;
-  --color-pale-grey: #F7F7F5;
-  --color-charcoal: #2D2D2D;
-  --color-charcoal-light: #4A4A4A;
-  --color-muted: #7A7A7A;
-  --color-border: #EBEBEB;
+/* ── Dark Mode: applies when .dark class is on <html> ── */
+@variant dark (&:where(.dark, .dark *));
 
-  /* Typography — font variable set by next/font in layout.tsx */
+@theme inline {
+  /* ── Light / Orange Brand ── */
+  --color-orange:        #F97316;
+  --color-orange-hover:  #EA6C0A;
+  --color-orange-light:  #FFF0E6;
+  --color-orange-border: #FDDCBC;
+
+  /* ── Neutrals ── */
+  --color-charcoal:      #1E1E2E;
+  --color-body:          #3D3D4E;
+  --color-muted:         #6B7280;
+  --color-pale:          #F9F9FB;
+  --color-border:        #E8E8F0;
+
+  /* ── Font ── */
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 *,
 *::before,
-*::after {
-  box-sizing: border-box;
-}
+*::after { box-sizing: border-box; }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background-color: #ffffff;
-  color: var(--color-charcoal);
+  color: var(--color-body);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
